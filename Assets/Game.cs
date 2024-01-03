@@ -40,29 +40,47 @@ public class Game : MonoBehaviour
 
 	public RawImage Background;
 
+	AudioClip Clip;
+
+	bool canStart = false;
+	bool isStarted = false;
+
     void Start()
 	{
 		if (Instance != null) Destroy(Instance);
 		
 		Instance = this;
-		Debug.Log(Application.streamingAssetsPath);
-		StartCoroutine(LoadBeatmap((beatmap, clip, texture) =>
+
+#if UNITY_WEBGL
+		string mapDir = Application.streamingAssetsPath + "/Map/";
+#elif UNITY_EDITOR
+		string mapDir = "file://" + pathToBeatmap;
+#else
+		string mapDir = "file://" + Application.streamingAssetsPath + "/Map/";
+#endif
+
+		StartCoroutine(LoadBeatmap(mapDir, (beatmap, clip, texture) =>
         {
 			this.beatmap = beatmap;
 			SetBackground(texture);
-			StartGame(clip);
+			Clip = clip;
+			canStart = true;
 		}));
-	}
+    }
 
-	IEnumerator LoadBeatmap(Action<Beatmap, AudioClip, Texture2D> action)
+    private void Update()
+    {
+        if(Input.anyKeyDown && canStart && !isStarted)
+		{
+			StartGame(Clip);
+			isStarted = true;
+
+        }
+    }
+
+    IEnumerator LoadBeatmap(string mapDir, Action<Beatmap, AudioClip, Texture2D> action)
 	{
-#if UNITY_WEBGL
-		string mapDir = Application.streamingAssetsPath + "/Map/";
-#else
-        string mapDir = "file://" + Application.streamingAssetsPath + "/Map/";
-#endif
-
-		string beatmapUri = mapDir + "Map.osu";
+		string beatmapUri =  mapDir + "Map.osu";
         Beatmap beatmap = null!;
 		using (UnityWebRequest beatmapRequest = UnityWebRequest.Get(beatmapUri))
 		{

@@ -787,8 +787,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   columnPrefab: {fileID: 1112334849759794924, guid: 3fde8ed0fb2ac4050a8f208bad6fd310, type: 3}
-  pathToBeatmap: /Users/Lime/Library/Application Support/osu/exports/Kanpyohgo -
-    Unmei no Dark Side -Rolling Gothic mix (FAMoss)/Map/Map.osu
+  pathToBeatmap: /Users/Lime/Library/Application Support/osu/exports/Fujikawa Chiai
+    - Kuyashisa wa Tane (Cut Ver.) (Yuiazu-)/
   musicSource: {fileID: 519420034}
   Background: {fileID: 298886290}
 --- !u!82 &519420034
